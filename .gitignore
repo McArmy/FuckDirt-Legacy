@@ -1,0 +1,33 @@
+# Project files
+build/
+conf/
+jars/
+libraries/
+minecraft/
+minecraft_any/
+minecraft_server/
+
+# Java files
+*.jar
+
+# Log files
+*.log
+
+# Environment files
+.env
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# Windows files
+Desktop.ini
+Thumbs.db
+
+# macOS files
+.DS_Store
+._*
+
+# *nix files
+.directory

@@ -1,0 +1,579 @@
+--- net/minecraft/src/MobSpawnerBase.java
++++ net/minecraft/src/MobSpawnerBase.java
+@@ -17,8 +17,8 @@
+ 	public static final MobSpawnerBase hell = (new MobSpawnerHell()).func_4123_b(16711680).setBiomeName("Hell");
+ 	public String biomeName;
+ 	public int field_6503_n;
+-	public byte topBlock = (byte)Block.grass.blockID;
+-	public byte fillerBlock = (byte)Block.dirt.blockID;
++	public byte topBlock = (byte)Block.stone.blockID;
++	public byte fillerBlock = (byte)Block.stone.blockID;
+ 	public int field_6502_q = 5169201;
+ 	protected Class[] biomeMonsters = new Class[]{EntitySpider.class, EntityZombie.class, EntitySkeleton.class, EntityCreeper.class};
+ 	protected Class[] biomeCreatures = new Class[]{EntitySheep.class, EntityPig.class, EntityChicken.class, EntityCow.class};
+--- net/minecraft/src/ItemSpade.java
++++ net/minecraft/src/ItemSpade.java
+@@ -1,7 +1,7 @@
+ package net.minecraft.src;
+ 
+ public class ItemSpade extends ItemTool {
+-	private static Block[] blocksEffectiveAgainst = new Block[]{Block.grass, Block.dirt, Block.sand, Block.gravel, Block.snow, Block.blockSnow, Block.blockClay};
++	private static Block[] blocksEffectiveAgainst = new Block[]{Block.sand, Block.gravel, Block.snow, Block.blockSnow, Block.blockClay};
+ 
+ 	public ItemSpade(int var1, int var2) {
+ 		super(var1, 1, var2, blocksEffectiveAgainst);
+--- net/minecraft/src/RenderBlocks.java
++++ net/minecraft/src/RenderBlocks.java
+@@ -1088,7 +1088,7 @@
+ 		float var14 = var11 * var5;
+ 		float var15 = var11 * var6;
+ 		float var16 = var11 * var7;
+-		if(var1 == Block.grass) {
++		if(var1 == Block.stone) {
+ 			var7 = 1.0F;
+ 			var6 = var7;
+ 			var5 = var7;
+--- net/minecraft/src/World.java
++++ net/minecraft/src/World.java
+@@ -1836,7 +1836,7 @@
+ 			var9 = null;
+ 		}
+ 
+-		return var9 != null && !this.checkIfAABBIsClear(var9) ? false : (var7 != Block.waterStill && var7 != Block.waterMoving && var7 != Block.lavaStill && var7 != Block.lavaMoving && var7 != Block.fire && var7 != Block.snow ? var1 > 0 && var7 == null && var8.canPlaceBlockAt(this, var2, var3, var4) : true);
++		return var9 != null && !this.checkIfAABBIsClear(var9) ? false : (var7 != Block.waterStill && var7 != Block.waterMoving && var7 != Block.lavaStill && var7 != Block.lavaMoving && var7 != Block.fire && var7 != Block.snow ? var1 > 0 && var7 == null && var8.canPlaceBlockAt(this, var2, var3, var4) : var8.canPlaceBlockAt(this, var2, var3, var4));
+ 	}
+ 
+ 	public PathEntity getPathToEntity(Entity var1, Entity var2, float var3) {
+--- net/minecraft/src/GuiMainMenu.java
++++ net/minecraft/src/GuiMainMenu.java
+@@ -11,7 +11,7 @@
+ 
+ public class GuiMainMenu extends GuiScreen {
+ 	private static final Random rand = new Random();
+-	String[] minecraftLogo = new String[]{" *   * * *   * *** *** *** *** *** ***", " ** ** * **  * *   *   * * * * *    * ", " * * * * * * * **  *   **  *** **   * ", " *   * * *  ** *   *   * * * * *    * ", " *   * * *   * *** *** * * * * *    * "};
++	String[] minecraftLogo = new String[]{" *** * *  ** * * **  *** **  *** ", " *   * * *   * * * *  *  * *  *  ", " *** * * *   **  * *  *  **   *  ", " *   * * *   * * * *  *  * *  *  ", " *    *   ** * * **  *** * *  *  "};
+ 	private LogoEffectRandomizer[][] logoEffects;
+ 	private float updateCounter = 0.0F;
+ 	private String splashText = "missingno";
+@@ -36,8 +36,6 @@
+ 			}
+ 		} catch (Exception var4) {
+ 		}
+-
+-		this.splashText = "Finally beta!";
+ 	}
+ 
+ 	public void updateScreen() {
+@@ -56,18 +54,6 @@
+ 	}
+ 
+ 	public void initGui() {
+-		Calendar var1 = Calendar.getInstance();
+-		var1.setTime(new Date());
+-		if(var1.get(2) + 1 == 11 && var1.get(5) == 9) {
+-			this.splashText = "Happy birthday, ez!";
+-		} else if(var1.get(2) + 1 == 6 && var1.get(5) == 1) {
+-			this.splashText = "Happy birthday, Notch!";
+-		} else if(var1.get(2) + 1 == 12 && var1.get(5) == 24) {
+-			this.splashText = "Merry X-mas!";
+-		} else if(var1.get(2) + 1 == 1 && var1.get(5) == 1) {
+-			this.splashText = "Happy new year!";
+-		}
+-
+ 		StringTranslate var2 = StringTranslate.func_20162_a();
+ 		int var4 = this.height / 4 + 48;
+ 		this.controlList.add(new GuiButton(1, this.width / 2 - 100, var4, var2.func_20163_a("menu.singleplayer")));
+@@ -124,7 +110,7 @@
+ 		GL11.glScalef(var5, var5, var5);
+ 		this.drawCenteredString(this.fontRenderer, this.splashText, 0, -8, 16776960);
+ 		GL11.glPopMatrix();
+-		this.drawString(this.fontRenderer, "Minecraft Beta 1.1_02", 2, 2, 5263440);
++		this.drawString(this.fontRenderer, "FuckDirt v1.4.2", 2, 2, 5263440);
+ 		String var6 = "Copyright Mojang AB. Do not distribute.";
+ 		this.drawString(this.fontRenderer, var6, this.width - this.fontRenderer.getStringWidth(var6) - 2, this.height - 10, 16777215);
+ 		super.drawScreen(var1, var2, var3);
+--- net/minecraft/src/GuiMultiplayer.java
++++ net/minecraft/src/GuiMultiplayer.java
+@@ -87,9 +87,7 @@
+ 		StringTranslate var4 = StringTranslate.func_20162_a();
+ 		this.drawDefaultBackground();
+ 		this.drawCenteredString(this.fontRenderer, var4.func_20163_a("multiplayer.title"), this.width / 2, this.height / 4 - 60 + 20, 16777215);
+-		this.drawString(this.fontRenderer, var4.func_20163_a("multiplayer.info1"), this.width / 2 - 140, this.height / 4 - 60 + 60 + 0, 10526880);
+-		this.drawString(this.fontRenderer, var4.func_20163_a("multiplayer.info2"), this.width / 2 - 140, this.height / 4 - 60 + 60 + 9, 10526880);
+-		this.drawString(this.fontRenderer, var4.func_20163_a("multiplayer.ipinfo"), this.width / 2 - 140, this.height / 4 - 60 + 60 + 36, 10526880);
++		this.drawString(this.fontRenderer, var4.func_20163_a("multiplayer.ipinfo"), this.width / 2 - 100, this.height / 4 - 60 + 60 + 36, 10526880);
+ 		int var5 = this.width / 2 - 100;
+ 		int var6 = this.height / 4 - 10 + 50 + 18;
+ 		short var7 = 200;
+--- net/minecraft/src/BlockFlower.java
++++ net/minecraft/src/BlockFlower.java
+@@ -16,7 +16,7 @@
+ 	}
+ 
+ 	protected boolean canThisPlantGrowOnThisBlockID(int var1) {
+-		return var1 == Block.grass.blockID || var1 == Block.dirt.blockID || var1 == Block.tilledField.blockID;
++		return var1 == Block.stone.blockID || var1 == Block.tilledField.blockID;
+ 	}
+ 
+ 	public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {
+--- net/minecraft/src/GuiIngame.java
++++ net/minecraft/src/GuiIngame.java
+@@ -150,7 +150,7 @@
+ 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+ 		String var23;
+ 		if(Keyboard.isKeyDown(Keyboard.KEY_F3)) {
+-			var8.drawStringWithShadow("Minecraft Beta 1.1_02 (" + this.mc.debug + ")", 2, 2, 16777215);
++			var8.drawStringWithShadow("FuckDirt v1.4.2 (" + this.mc.debug + ")", 2, 2, 16777215);
+ 			var8.drawStringWithShadow(this.mc.func_6241_m(), 2, 12, 16777215);
+ 			var8.drawStringWithShadow(this.mc.func_6262_n(), 2, 22, 16777215);
+ 			var8.drawStringWithShadow(this.mc.func_6245_o(), 2, 32, 16777215);
+@@ -166,7 +166,7 @@
+ 			this.drawString(var8, "y: " + this.mc.thePlayer.posY, 2, 72, 14737632);
+ 			this.drawString(var8, "z: " + this.mc.thePlayer.posZ, 2, 80, 14737632);
+ 		} else {
+-			var8.drawStringWithShadow("Minecraft Beta 1.1_02", 2, 2, 16777215);
++			var8.drawStringWithShadow("FuckDirt v1.4.2", 2, 2, 16777215);
+ 		}
+ 
+ 		if(this.field_9419_j > 0) {
+--- net/minecraft/src/ItemHoe.java
++++ net/minecraft/src/ItemHoe.java
+@@ -10,7 +10,7 @@
+ 	public boolean onItemUse(ItemStack var1, EntityPlayer var2, World var3, int var4, int var5, int var6, int var7) {
+ 		int var8 = var3.getBlockId(var4, var5, var6);
+ 		Material var9 = var3.getBlockMaterial(var4, var5 + 1, var6);
+-		if((var9.func_878_a() || var8 != Block.grass.blockID) && var8 != Block.dirt.blockID) {
++		if(var9.func_878_a() || var8 != Block.stone.blockID) {
+ 			return false;
+ 		} else {
+ 			Block var10 = Block.tilledField;
+@@ -20,7 +20,7 @@
+ 			} else {
+ 				var3.setBlockWithNotify(var4, var5, var6, var10.blockID);
+ 				var1.damageItem(1);
+-				if(var3.rand.nextInt(8) == 0 && var8 == Block.grass.blockID) {
++				if(var3.rand.nextInt(8) == 0 && var8 == Block.stone.blockID) {
+ 					byte var11 = 1;
+ 
+ 					for(int var12 = 0; var12 < var11; ++var12) {
+--- net/minecraft/src/WorldGenTrees.java
++++ net/minecraft/src/WorldGenTrees.java
+@@ -39,9 +39,7 @@
+ 				return false;
+ 			} else {
+ 				var8 = var1.getBlockId(var3, var4 - 1, var5);
+-				if((var8 == Block.grass.blockID || var8 == Block.dirt.blockID) && var4 < 128 - var6 - 1) {
+-					var1.setBlock(var3, var4 - 1, var5, Block.dirt.blockID);
+-
++				if(var8 == Block.stone.blockID && var4 < 128 - var6 - 1) {
+ 					int var16;
+ 					for(var16 = var4 - 3 + var6; var16 <= var4 + var6; ++var16) {
+ 						var10 = var16 - (var4 + var6);
+--- net/minecraft/src/BlockDirt.java
++++ /dev/null
+@@ -1,7 +1,0 @@
+-package net.minecraft.src;
+-
+-public class BlockDirt extends Block {
+-	protected BlockDirt(int var1, int var2) {
+-		super(var1, var2, Material.ground);
+-	}
+-}
+--- net/minecraft/src/ChunkProviderGenerate.java
++++ net/minecraft/src/ChunkProviderGenerate.java
+@@ -343,13 +343,6 @@
+ 			(new WorldGenClay(32)).generate(this.worldObj, this.rand, var14, var15, var16);
+ 		}
+ 
+-		for(var13 = 0; var13 < 20; ++var13) {
+-			var14 = var4 + this.rand.nextInt(16);
+-			var15 = this.rand.nextInt(128);
+-			var16 = var5 + this.rand.nextInt(16);
+-			(new WorldGenMinable(Block.dirt.blockID, 32)).generate(this.worldObj, this.rand, var14, var15, var16);
+-		}
+-
+ 		for(var13 = 0; var13 < 10; ++var13) {
+ 			var14 = var4 + this.rand.nextInt(16);
+ 			var15 = this.rand.nextInt(128);
+--- net/minecraft/src/PanelCrashReport.java
++++ net/minecraft/src/PanelCrashReport.java
+@@ -25,7 +25,7 @@
+ 		try {
+ 			var5 = var5 + "Generated " + (new SimpleDateFormat()).format(new Date()) + "\n";
+ 			var5 = var5 + "\n";
+-			var5 = var5 + "Minecraft: Minecraft Beta 1.1_02\n";
++			var5 = var5 + "Minecraft: FuckDirt v1.4.2\n";
+ 			var5 = var5 + "OS: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") version " + System.getProperty("os.version") + "\n";
+ 			var5 = var5 + "Java: " + System.getProperty("java.version") + ", " + System.getProperty("java.vendor") + "\n";
+ 			var5 = var5 + "VM: " + System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor") + "\n";
+--- net/minecraft/src/BlockSoil.java
++++ net/minecraft/src/BlockSoil.java
+@@ -4,7 +4,7 @@
+ 
+ public class BlockSoil extends Block {
+ 	protected BlockSoil(int var1) {
+-		super(var1, Material.ground);
++		super(var1, Material.rock);
+ 		this.blockIndexInTexture = 87;
+ 		this.setTickOnLoad(true);
+ 		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 15.0F / 16.0F, 1.0F);
+@@ -24,7 +24,7 @@
+ 	}
+ 
+ 	public int getBlockTextureFromSideAndMetadata(int var1, int var2) {
+-		return var1 == 1 && var2 > 0 ? this.blockIndexInTexture - 1 : (var1 == 1 ? this.blockIndexInTexture : 2);
++		return var1 == 1 && var2 > 0 ? this.blockIndexInTexture - 1 : (var1 == 1 ? this.blockIndexInTexture : 1);
+ 	}
+ 
+ 	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+@@ -36,7 +36,7 @@
+ 				if(var6 > 0) {
+ 					var1.setBlockMetadataWithNotify(var2, var3, var4, var6 - 1);
+ 				} else if(!this.func_275_h(var1, var2, var3, var4)) {
+-					var1.setBlockWithNotify(var2, var3, var4, Block.dirt.blockID);
++					var1.setBlockWithNotify(var2, var3, var4, Block.stone.blockID);
+ 				}
+ 			}
+ 		}
+@@ -45,7 +45,7 @@
+ 
+ 	public void onEntityWalking(World var1, int var2, int var3, int var4, Entity var5) {
+ 		if(var1.rand.nextInt(4) == 0) {
+-			var1.setBlockWithNotify(var2, var3, var4, Block.dirt.blockID);
++			var1.setBlockWithNotify(var2, var3, var4, Block.stone.blockID);
+ 		}
+ 
+ 	}
+@@ -82,12 +82,12 @@
+ 		super.onNeighborBlockChange(var1, var2, var3, var4, var5);
+ 		Material var6 = var1.getBlockMaterial(var2, var3 + 1, var4);
+ 		if(var6.func_878_a()) {
+-			var1.setBlockWithNotify(var2, var3, var4, Block.dirt.blockID);
++			var1.setBlockWithNotify(var2, var3, var4, Block.stone.blockID);
+ 		}
+ 
+ 	}
+ 
+ 	public int idDropped(int var1, Random var2) {
+-		return Block.dirt.idDropped(0, var2);
++		return Block.stone.idDropped(0, var2);
+ 	}
+ }
+--- net/minecraft/src/EntityDiggingFX.java
++++ net/minecraft/src/EntityDiggingFX.java
+@@ -13,15 +13,11 @@
+ 	}
+ 
+ 	public EntityDiggingFX func_4041_a(int var1, int var2, int var3) {
+-		if(this.field_4082_a == Block.grass) {
+-			return this;
+-		} else {
+-			int var4 = this.field_4082_a.colorMultiplier(this.worldObj, var1, var2, var3);
+-			this.particleRed *= (float)(var4 >> 16 & 255) / 255.0F;
+-			this.particleBlue *= (float)(var4 >> 8 & 255) / 255.0F;
+-			this.particleGreen *= (float)(var4 & 255) / 255.0F;
+-			return this;
+-		}
++		int var4 = this.field_4082_a.colorMultiplier(this.worldObj, var1, var2, var3);
++		this.particleRed *= (float)(var4 >> 16 & 255) / 255.0F;
++		this.particleBlue *= (float)(var4 >> 8 & 255) / 255.0F;
++		this.particleGreen *= (float)(var4 & 255) / 255.0F;
++		return this;
+ 	}
+ 
+ 	public int func_404_c() {
+--- net/minecraft/src/EntityAnimals.java
++++ net/minecraft/src/EntityAnimals.java
+@@ -6,7 +6,7 @@
+ 	}
+ 
+ 	protected float getBlockPathWeight(int var1, int var2, int var3) {
+-		return this.worldObj.getBlockId(var1, var2 - 1, var3) == Block.grass.blockID ? 10.0F : this.worldObj.getLightBrightness(var1, var2, var3) - 0.5F;
++		return this.worldObj.getBlockId(var1, var2 - 1, var3) == Block.stone.blockID ? 10.0F : this.worldObj.getLightBrightness(var1, var2, var3) - 0.5F;
+ 	}
+ 
+ 	public void writeEntityToNBT(NBTTagCompound var1) {
+@@ -21,7 +21,7 @@
+ 		int var1 = MathHelper.floor_double(this.posX);
+ 		int var2 = MathHelper.floor_double(this.boundingBox.minY);
+ 		int var3 = MathHelper.floor_double(this.posZ);
+-		return this.worldObj.getBlockId(var1, var2 - 1, var3) == Block.grass.blockID && this.worldObj.getBlockLightValue(var1, var2, var3) > 8 && super.getCanSpawnHere();
++		return this.worldObj.getBlockId(var1, var2 - 1, var3) == Block.stone.blockID && this.worldObj.getBlockLightValue(var1, var2, var3) > 8 && super.getCanSpawnHere();
+ 	}
+ 
+ 	public int func_421_b() {
+--- net/minecraft/client/Minecraft.java
++++ net/minecraft/client/Minecraft.java
+@@ -182,7 +182,7 @@
+ 			Display.setDisplayMode(new DisplayMode(this.displayWidth, this.displayHeight));
+ 		}
+ 
+-		Display.setTitle("Minecraft Minecraft Beta 1.1_02");
++		Display.setTitle("Minecraft: FuckDirt v1.4.2");
+ 
+ 		try {
+ 			Display.create();
+@@ -825,9 +825,6 @@
+ 	private void clickMiddleMouseButton() {
+ 		if(this.objectMouseOver != null) {
+ 			int var1 = this.theWorld.getBlockId(this.objectMouseOver.blockX, this.objectMouseOver.blockY, this.objectMouseOver.blockZ);
+-			if(var1 == Block.grass.blockID) {
+-				var1 = Block.dirt.blockID;
+-			}
+ 
+ 			if(var1 == Block.stairDouble.blockID) {
+ 				var1 = Block.stairSingle.blockID;
+--- net/minecraft/src/Session.java
++++ net/minecraft/src/Session.java
+@@ -18,7 +18,6 @@
+ 		registeredBlocksList.add(Block.stone);
+ 		registeredBlocksList.add(Block.cobblestone);
+ 		registeredBlocksList.add(Block.brick);
+-		registeredBlocksList.add(Block.dirt);
+ 		registeredBlocksList.add(Block.planks);
+ 		registeredBlocksList.add(Block.wood);
+ 		registeredBlocksList.add(Block.leaves);
+--- net/minecraft/src/Material.java
++++ net/minecraft/src/Material.java
+@@ -6,26 +6,27 @@
+ 	public static final Material wood = (new Material()).setBurning();
+ 	public static final Material rock = new Material();
+ 	public static final Material iron = new Material();
+-	public static final Material water = new MaterialLiquid();
+-	public static final Material lava = new MaterialLiquid();
++	public static final Material water = (new MaterialLiquid()).setCanOverride();
++	public static final Material lava = (new MaterialLiquid()).setCanOverride();
+ 	public static final Material leaves = (new Material()).setBurning();
+ 	public static final Material plants = new MaterialLogic();
+ 	public static final Material sponge = new Material();
+ 	public static final Material cloth = (new Material()).setBurning();
+-	public static final Material fire = new MaterialTransparent();
++	public static final Material fire = (new MaterialTransparent()).setCanOverride();
+ 	public static final Material sand = new Material();
+ 	public static final Material circuits = new MaterialLogic();
+ 	public static final Material glass = new Material();
+ 	public static final Material tnt = (new Material()).setBurning();
+ 	public static final Material unused = new Material();
+ 	public static final Material ice = new Material();
+-	public static final Material snow = new MaterialLogic();
++	public static final Material snow = (new MaterialLogic()).setCanOverride();
+ 	public static final Material builtSnow = new Material();
+ 	public static final Material cactus = new Material();
+ 	public static final Material clay = new Material();
+ 	public static final Material pumpkin = new Material();
+ 	public static final Material portal = new Material();
+ 	private boolean canBurn;
++	private boolean canOverride;
+ 
+ 	public boolean getIsLiquid() {
+ 		return false;
+@@ -43,7 +44,16 @@
+ 		return true;
+ 	}
+ 
+-	private Material setBurning() {
++	public Material setCanOverride() {
++		this.canOverride = true;
++		return this;
++	}
++
++	public boolean getCanOverride() {
++		return this.canOverride;
++	}
++
++	public Material setBurning() {
+ 		this.canBurn = true;
+ 		return this;
+ 	}
+--- net/minecraft/src/WorldGenPumpkin.java
++++ net/minecraft/src/WorldGenPumpkin.java
+@@ -8,7 +8,7 @@
+ 			int var7 = var3 + var2.nextInt(8) - var2.nextInt(8);
+ 			int var8 = var4 + var2.nextInt(4) - var2.nextInt(4);
+ 			int var9 = var5 + var2.nextInt(8) - var2.nextInt(8);
+-			if(var1.func_20084_d(var7, var8, var9) && var1.getBlockId(var7, var8 - 1, var9) == Block.grass.blockID && Block.pumpkin.canPlaceBlockAt(var1, var7, var8, var9)) {
++			if(var1.func_20084_d(var7, var8, var9) && var1.getBlockId(var7, var8 - 1, var9) == Block.stone.blockID && Block.pumpkin.canPlaceBlockAt(var1, var7, var8, var9)) {
+ 				var1.setBlockAndMetadata(var7, var8, var9, Block.pumpkin.blockID, var2.nextInt(4));
+ 			}
+ 		}
+--- net/minecraft/src/WorldGenLakes.java
++++ net/minecraft/src/WorldGenLakes.java
+@@ -74,16 +74,6 @@
+ 			}
+ 		}
+ 
+-		for(var8 = 0; var8 < 16; ++var8) {
+-			for(var32 = 0; var32 < 16; ++var32) {
+-				for(var10 = 4; var10 < 8; ++var10) {
+-					if(var6[(var8 * 16 + var32) * 8 + var10] && var1.getBlockId(var3 + var8, var4 + var10 - 1, var5 + var32) == Block.dirt.blockID && var1.getSavedLightValue(EnumSkyBlock.Sky, var3 + var8, var4 + var10, var5 + var32) > 0) {
+-						var1.setBlockWithNotify(var3 + var8, var4 + var10 - 1, var5 + var32, Block.grass.blockID);
+-					}
+-				}
+-			}
+-		}
+-
+ 		if(Block.blocksList[this.field_15235_a].blockMaterial == Material.lava) {
+ 			for(var8 = 0; var8 < 16; ++var8) {
+ 				for(var32 = 0; var32 < 16; ++var32) {
+--- net/minecraft/src/MapGenCavesHell.java
++++ net/minecraft/src/MapGenCavesHell.java
+@@ -125,7 +125,7 @@
+ 									double var48 = ((double)var47 + 0.5D - var6) / var29;
+ 									if(var48 > -0.7D && var56 * var56 + var48 * var48 + var44 * var44 < 1.0D) {
+ 										byte var50 = var3[var46];
+-										if(var50 == Block.bloodStone.blockID || var50 == Block.dirt.blockID || var50 == Block.grass.blockID) {
++										if(var50 == Block.bloodStone.blockID) {
+ 											var3[var46] = 0;
+ 										}
+ 									}
+--- net/minecraft/src/Block.java
++++ net/minecraft/src/Block.java
+@@ -21,8 +21,6 @@
+ 	public static final boolean[] unusedBooleanArray = new boolean[256];
+ 	public static final int[] lightValue = new int[256];
+ 	public static final Block stone = (new BlockStone(1, 1)).setHardness(1.5F).setResistance(10.0F).setStepSound(soundStoneFootstep).func_20012_a("stone");
+-	public static final BlockGrass grass = (BlockGrass)(new BlockGrass(2)).setHardness(0.6F).setStepSound(soundGrassFootstep).func_20012_a("grass");
+-	public static final Block dirt = (new BlockDirt(3, 2)).setHardness(0.5F).setStepSound(soundGravelFootstep).func_20012_a("dirt");
+ 	public static final Block cobblestone = (new Block(4, 16, Material.rock)).setHardness(2.0F).setResistance(10.0F).setStepSound(soundStoneFootstep).func_20012_a("stonebrick");
+ 	public static final Block planks = (new Block(5, 4, Material.wood)).setHardness(2.0F).setResistance(5.0F).setStepSound(soundWoodFootstep).func_20012_a("wood");
+ 	public static final Block sapling = (new BlockSapling(6, 15)).setHardness(0.0F).setStepSound(soundGrassFootstep).func_20012_a("sapling");
+@@ -79,7 +77,7 @@
+ 	public static final Block blockDiamond = (new BlockOreBlock(57, 40)).setHardness(5.0F).setResistance(10.0F).setStepSound(soundMetalFootstep).func_20012_a("blockDiamond");
+ 	public static final Block workbench = (new BlockWorkbench(58)).setHardness(2.5F).setStepSound(soundWoodFootstep).func_20012_a("workbench");
+ 	public static final Block crops = (new BlockCrops(59, 88)).setHardness(0.0F).setStepSound(soundGrassFootstep).func_20012_a("crops");
+-	public static final Block tilledField = (new BlockSoil(60)).setHardness(0.6F).setStepSound(soundGravelFootstep).func_20012_a("farmland");
++	public static final Block tilledField = (new BlockSoil(60)).setHardness(1.5F).setResistance(10.0F).setStepSound(soundStoneFootstep).func_20012_a("farmland");
+ 	public static final Block stoneOvenIdle = (new BlockFurnace(61, false)).setHardness(3.5F).setStepSound(soundStoneFootstep).func_20012_a("furnace");
+ 	public static final Block stoneOvenActive = (new BlockFurnace(62, true)).setHardness(3.5F).setStepSound(soundStoneFootstep).setLightValue(14.0F / 16.0F).func_20012_a("furnace");
+ 	public static final Block signPost = (new BlockSign(63, TileEntitySign.class, true)).setHardness(1.0F).setStepSound(soundWoodFootstep).func_20012_a("sign");
+@@ -428,7 +426,7 @@
+ 
+ 	public boolean canPlaceBlockAt(World var1, int var2, int var3, int var4) {
+ 		int var5 = var1.getBlockId(var2, var3, var4);
+-		return var5 == 0 || blocksList[var5].blockMaterial.getIsLiquid();
++		return var5 == 0 || blocksList[var5].blockMaterial.getCanOverride();
+ 	}
+ 
+ 	public boolean blockActivated(World var1, int var2, int var3, int var4, EntityPlayer var5) {
+--- net/minecraft/src/MapGenCaves.java
++++ net/minecraft/src/MapGenCaves.java
+@@ -126,18 +126,15 @@
+ 									double var49 = ((double)var48 + 0.5D - var6) / var29;
+ 									if(var49 > -0.7D && var57 * var57 + var49 * var49 + var44 * var44 < 1.0D) {
+ 										byte var51 = var3[var46];
+-										if(var51 == Block.grass.blockID) {
++										if(var51 == Block.stone.blockID) {
+ 											var47 = true;
+ 										}
+ 
+-										if(var51 == Block.stone.blockID || var51 == Block.dirt.blockID || var51 == Block.grass.blockID) {
++										if(var51 == Block.stone.blockID) {
+ 											if(var48 < 10) {
+ 												var3[var46] = (byte)Block.lavaStill.blockID;
+ 											} else {
+ 												var3[var46] = 0;
+-												if(var47 && var3[var46 - 1] == Block.dirt.blockID) {
+-													var3[var46 - 1] = (byte)Block.grass.blockID;
+-												}
+ 											}
+ 										}
+ 									}
+--- net/minecraft/src/BlockGrass.java
++++ /dev/null
+@@ -1,53 +1,0 @@
+-package net.minecraft.src;
+-
+-import java.util.Random;
+-
+-public class BlockGrass extends Block {
+-	protected BlockGrass(int var1) {
+-		super(var1, Material.ground);
+-		this.blockIndexInTexture = 3;
+-		this.setTickOnLoad(true);
+-	}
+-
+-	public int getBlockTexture(IBlockAccess var1, int var2, int var3, int var4, int var5) {
+-		if(var5 == 1) {
+-			return 0;
+-		} else if(var5 == 0) {
+-			return 2;
+-		} else {
+-			Material var6 = var1.getBlockMaterial(var2, var3 + 1, var4);
+-			return var6 != Material.snow && var6 != Material.builtSnow ? 3 : 68;
+-		}
+-	}
+-
+-	public int colorMultiplier(IBlockAccess var1, int var2, int var3, int var4) {
+-		var1.func_4075_a().func_4069_a(var2, var4, 1, 1);
+-		double var5 = var1.func_4075_a().temperature[0];
+-		double var7 = var1.func_4075_a().humidity[0];
+-		return ColorizerGrass.func_4147_a(var5, var7);
+-	}
+-
+-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+-		if(!var1.multiplayerWorld) {
+-			if(var1.getBlockLightValue(var2, var3 + 1, var4) < 4 && var1.getBlockMaterial(var2, var3 + 1, var4).getCanBlockGrass()) {
+-				if(var5.nextInt(4) != 0) {
+-					return;
+-				}
+-
+-				var1.setBlockWithNotify(var2, var3, var4, Block.dirt.blockID);
+-			} else if(var1.getBlockLightValue(var2, var3 + 1, var4) >= 9) {
+-				int var6 = var2 + var5.nextInt(3) - 1;
+-				int var7 = var3 + var5.nextInt(5) - 3;
+-				int var8 = var4 + var5.nextInt(3) - 1;
+-				if(var1.getBlockId(var6, var7, var8) == Block.dirt.blockID && var1.getBlockLightValue(var6, var7 + 1, var8) >= 4 && !var1.getBlockMaterial(var6, var7 + 1, var8).getCanBlockGrass()) {
+-					var1.setBlockWithNotify(var6, var7, var8, Block.grass.blockID);
+-				}
+-			}
+-
+-		}
+-	}
+-
+-	public int idDropped(int var1, Random var2) {
+-		return Block.dirt.idDropped(0, var2);
+-	}
+-}
+--- net/minecraft/src/BlockReed.java
++++ net/minecraft/src/BlockReed.java
+@@ -32,7 +32,7 @@
+ 
+ 	public boolean canPlaceBlockAt(World var1, int var2, int var3, int var4) {
+ 		int var5 = var1.getBlockId(var2, var3 - 1, var4);
+-		return var5 == this.blockID ? true : (var5 != Block.grass.blockID && var5 != Block.dirt.blockID ? false : (var1.getBlockMaterial(var2 - 1, var3 - 1, var4) == Material.water ? true : (var1.getBlockMaterial(var2 + 1, var3 - 1, var4) == Material.water ? true : (var1.getBlockMaterial(var2, var3 - 1, var4 - 1) == Material.water ? true : var1.getBlockMaterial(var2, var3 - 1, var4 + 1) == Material.water))));
++		return var5 == this.blockID ? true : (var5 != Block.stone.blockID ? false : (var1.getBlockMaterial(var2 - 1, var3 - 1, var4) == Material.water ? true : (var1.getBlockMaterial(var2 + 1, var3 - 1, var4) == Material.water ? true : (var1.getBlockMaterial(var2, var3 - 1, var4 - 1) == Material.water ? true : var1.getBlockMaterial(var2, var3 - 1, var4 + 1) == Material.water))));
+ 	}
+ 
+ 	public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {
+--- net/minecraft/src/BlockStone.java
++++ net/minecraft/src/BlockStone.java
+@@ -3,6 +3,15 @@
+ import java.util.Random;
+ 
+ public class BlockStone extends Block {
++	public int getBlockTexture(IBlockAccess var1, int var2, int var3, int var4, int var5) {
++		if (this.blockID == Block.stone.blockID) {
++			Material var6 = var1.getBlockMaterial(var2, var3 + 1, var4);
++			return var6 != Material.snow && var6 != Material.builtSnow ? 1 : 68;
++		}
++
++		return super.getBlockTexture(var1, var2, var3, var4, var5);
++	}
++
+ 	public BlockStone(int var1, int var2) {
+ 		super(var1, var2, Material.rock);
+ 	}
+--- net/minecraft/src/GameSettings.java
++++ net/minecraft/src/GameSettings.java
+@@ -26,9 +26,9 @@
+ 	public KeyBinding keyBindBack = new KeyBinding("key.back", 31);
+ 	public KeyBinding keyBindRight = new KeyBinding("key.right", 32);
+ 	public KeyBinding keyBindJump = new KeyBinding("key.jump", 57);
+-	public KeyBinding keyBindInventory = new KeyBinding("key.inventory", 23);
++	public KeyBinding keyBindInventory = new KeyBinding("key.inventory", 15);
+ 	public KeyBinding keyBindDrop = new KeyBinding("key.drop", 16);
+-	public KeyBinding keyBindChat = new KeyBinding("key.chat", 20);
++	public KeyBinding keyBindChat = new KeyBinding("key.chat", 28);
+ 	public KeyBinding keyBindToggleFog = new KeyBinding("key.fog", 33);
+ 	public KeyBinding keyBindSneak = new KeyBinding("key.sneak", 42);
+ 	public KeyBinding[] keyBindings = new KeyBinding[]{this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindToggleFog};
