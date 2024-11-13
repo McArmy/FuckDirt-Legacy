@@ -5,7 +5,7 @@ gui.toMenu=Back to title screen
 
 menu.singleplayer=Singleplayer
 menu.multiplayer=Multiplayer
-menu.mods=Mods and Texture Packs
+menu.texturepacks=Texture Packs
 menu.options=Options...
 menu.quit=Quit Game
 

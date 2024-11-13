@@ -64,7 +64,7 @@
  	}
  
  	public void updateScreen() {
-@@ -56,18 +54,6 @@
+@@ -56,23 +54,11 @@
  	}
  
  	public void initGui() {
@@ -83,12 +83,18 @@
  		StringTranslate var2 = StringTranslate.func_20162_a();
  		int var4 = this.height / 4 + 48;
  		this.controlList.add(new GuiButton(1, this.width / 2 - 100, var4, var2.func_20163_a("menu.singleplayer")));
+ 		this.controlList.add(new GuiButton(2, this.width / 2 - 100, var4 + 24, var2.func_20163_a("menu.multiplayer")));
+-		this.controlList.add(new GuiButton(3, this.width / 2 - 100, var4 + 48, var2.func_20163_a("menu.mods")));
++		this.controlList.add(new GuiButton(3, this.width / 2 - 100, var4 + 48, var2.func_20163_a("menu.texturepacks")));
+ 		if(this.mc.field_6317_l) {
+ 			this.controlList.add(new GuiButton(0, this.width / 2 - 100, var4 + 72, var2.func_20163_a("menu.options")));
+ 		} else {
 @@ -124,7 +110,7 @@
  		GL11.glScalef(var5, var5, var5);
  		this.drawCenteredString(this.fontRenderer, this.splashText, 0, -8, 16776960);
  		GL11.glPopMatrix();
 -		this.drawString(this.fontRenderer, "Minecraft Beta 1.1_02", 2, 2, 5263440);
-+		this.drawString(this.fontRenderer, "FuckDirt v1.4.2", 2, 2, 5263440);
++		this.drawString(this.fontRenderer, "FuckDirt v1.4.3", 2, 2, 5263440);
  		String var6 = "Copyright Mojang AB. Do not distribute.";
  		this.drawString(this.fontRenderer, var6, this.width - this.fontRenderer.getStringWidth(var6) - 2, this.height - 10, 16777215);
  		super.drawScreen(var1, var2, var3);
@@ -123,7 +129,7 @@
  		String var23;
  		if(Keyboard.isKeyDown(Keyboard.KEY_F3)) {
 -			var8.drawStringWithShadow("Minecraft Beta 1.1_02 (" + this.mc.debug + ")", 2, 2, 16777215);
-+			var8.drawStringWithShadow("FuckDirt v1.4.2 (" + this.mc.debug + ")", 2, 2, 16777215);
++			var8.drawStringWithShadow("FuckDirt v1.4.3 (" + this.mc.debug + ")", 2, 2, 16777215);
  			var8.drawStringWithShadow(this.mc.func_6241_m(), 2, 12, 16777215);
  			var8.drawStringWithShadow(this.mc.func_6262_n(), 2, 22, 16777215);
  			var8.drawStringWithShadow(this.mc.func_6245_o(), 2, 32, 16777215);
@@ -132,7 +138,7 @@
  			this.drawString(var8, "z: " + this.mc.thePlayer.posZ, 2, 80, 14737632);
  		} else {
 -			var8.drawStringWithShadow("Minecraft Beta 1.1_02", 2, 2, 16777215);
-+			var8.drawStringWithShadow("FuckDirt v1.4.2", 2, 2, 16777215);
++			var8.drawStringWithShadow("FuckDirt v1.4.3", 2, 2, 16777215);
  		}
  
  		if(this.field_9419_j > 0) {
@@ -202,7 +208,7 @@
  			var5 = var5 + "Generated " + (new SimpleDateFormat()).format(new Date()) + "\n";
  			var5 = var5 + "\n";
 -			var5 = var5 + "Minecraft: Minecraft Beta 1.1_02\n";
-+			var5 = var5 + "Minecraft: FuckDirt v1.4.2\n";
++			var5 = var5 + "Minecraft: FuckDirt v1.4.3\n";
  			var5 = var5 + "OS: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") version " + System.getProperty("os.version") + "\n";
  			var5 = var5 + "Java: " + System.getProperty("java.version") + ", " + System.getProperty("java.vendor") + "\n";
  			var5 = var5 + "VM: " + System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor") + "\n";
@@ -309,7 +315,7 @@
  		}
  
 -		Display.setTitle("Minecraft Minecraft Beta 1.1_02");
-+		Display.setTitle("Minecraft: FuckDirt v1.4.2");
++		Display.setTitle("Minecraft: FuckDirt v1.4.3");
  
  		try {
  			Display.create();
@@ -333,6 +339,53 @@
  		registeredBlocksList.add(Block.planks);
  		registeredBlocksList.add(Block.wood);
  		registeredBlocksList.add(Block.leaves);
+--- net/minecraft/src/EntityPlayerSP.java
++++ net/minecraft/src/EntityPlayerSP.java
+@@ -77,12 +77,10 @@
+ 
+ 	public void writeEntityToNBT(NBTTagCompound var1) {
+ 		super.writeEntityToNBT(var1);
+-		var1.setInteger("Score", this.score);
+ 	}
+ 
+ 	public void readEntityFromNBT(NBTTagCompound var1) {
+ 		super.readEntityFromNBT(var1);
+-		this.score = var1.getInteger("Score");
+ 	}
+ 
+ 	public void func_20059_m() {
+--- net/minecraft/src/EntityPlayer.java
++++ net/minecraft/src/EntityPlayer.java
+@@ -7,7 +7,6 @@
+ 	public CraftingInventoryCB field_20069_g;
+ 	public CraftingInventoryCB field_20068_h;
+ 	public byte field_9371_f = 0;
+-	public int score = 0;
+ 	public float field_775_e;
+ 	public float field_774_f;
+ 	public boolean isSwinging = false;
+@@ -159,10 +158,6 @@
+ 		var1.onCollideWithPlayer(this);
+ 	}
+ 
+-	public int getScore() {
+-		return this.score;
+-	}
+-
+ 	public void onDeath(Entity var1) {
+ 		super.onDeath(var1);
+ 		this.setSize(0.2F, 0.2F);
+@@ -181,10 +176,6 @@
+ 		}
+ 
+ 		this.yOffset = 0.1F;
+-	}
+-
+-	public void addToPlayerScore(Entity var1, int var2) {
+-		this.score += var2;
+ 	}
+ 
+ 	public void func_20060_w() {
 --- net/minecraft/src/Material.java
 +++ net/minecraft/src/Material.java
 @@ -6,26 +6,27 @@
@@ -385,6 +438,18 @@
  		this.canBurn = true;
  		return this;
  	}
+--- net/minecraft/src/Entity.java
++++ net/minecraft/src/Entity.java
+@@ -650,9 +650,6 @@
+ 		return false;
+ 	}
+ 
+-	public void addToPlayerScore(Entity var1, int var2) {
+-	}
+-
+ 	public boolean isInRangeToRenderVec3D(Vec3D var1) {
+ 		double var2 = this.posX - var1.xCoord;
+ 		double var4 = this.posY - var1.yCoord;
 --- net/minecraft/src/WorldGenPumpkin.java
 +++ net/minecraft/src/WorldGenPumpkin.java
 @@ -8,7 +8,7 @@
@@ -545,6 +610,37 @@
  	}
  
  	public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {
+--- net/minecraft/src/GuiGameOver.java
++++ net/minecraft/src/GuiGameOver.java
+@@ -38,7 +38,6 @@
+ 		GL11.glScalef(2.0F, 2.0F, 2.0F);
+ 		this.drawCenteredString(this.fontRenderer, "Game over!", this.width / 2 / 2, 30, 16777215);
+ 		GL11.glPopMatrix();
+-		this.drawCenteredString(this.fontRenderer, "Score: &e" + this.mc.thePlayer.getScore(), this.width / 2, 100, 16777215);
+ 		super.drawScreen(var1, var2, var3);
+ 	}
+ 
+--- net/minecraft/src/EntityLiving.java
++++ net/minecraft/src/EntityLiving.java
+@@ -19,7 +19,6 @@
+ 	protected float field_9353_B = 0.0F;
+ 	protected String field_9351_C = null;
+ 	protected float field_9349_D = 1.0F;
+-	protected int field_9347_E = 0;
+ 	protected float field_9345_F = 0.0F;
+ 	public boolean field_9343_G = false;
+ 	public float prevSwingProgress;
+@@ -399,10 +398,6 @@
+ 	}
+ 
+ 	public void onDeath(Entity var1) {
+-		if(this.field_9347_E > 0 && var1 != null) {
+-			var1.addToPlayerScore(this, this.field_9347_E);
+-		}
+-
+ 		this.field_9327_S = true;
+ 		if(!this.worldObj.multiplayerWorld) {
+ 			int var2 = this.getDropItemId();
 --- net/minecraft/src/BlockStone.java
 +++ net/minecraft/src/BlockStone.java
 @@ -3,6 +3,15 @@

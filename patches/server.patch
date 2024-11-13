@@ -76,7 +76,7 @@
  		super(var1, 1, var2, blocksGoodAgainst);
 --- net/minecraft/src/World.java
 +++ net/minecraft/src/World.java
-@@ -1514,7 +1514,7 @@
+@@ -1515,7 +1515,7 @@
  			var9 = null;
  		}
  
@@ -114,6 +114,18 @@
  		}
  	}
  
+--- net/minecraft/src/Entity.java
++++ net/minecraft/src/Entity.java
+@@ -605,9 +605,6 @@
+ 		return false;
+ 	}
+ 
+-	public void addToPlayerScore(Entity var1, int var2) {
+-	}
+-
+ 	public boolean func_95_c(NBTTagCompound var1) {
+ 		String var2 = this.getEntityString();
+ 		if(!this.isDead && var2 != null) {
 --- net/minecraft/src/WorldGenPumpkin.java
 +++ net/minecraft/src/WorldGenPumpkin.java
 @@ -8,7 +8,7 @@
@@ -428,6 +440,27 @@
  	}
  
  	public int func_146_b() {
+--- net/minecraft/src/EntityLiving.java
++++ net/minecraft/src/EntityLiving.java
+@@ -19,7 +19,6 @@
+ 	protected float field_9117_aI = 0.0F;
+ 	protected String field_9116_aJ = null;
+ 	protected float field_9115_aK = 1.0F;
+-	protected int field_9114_aL = 0;
+ 	protected float field_9113_aM = 0.0F;
+ 	public boolean field_9112_aN = false;
+ 	public float prevSwingProgress;
+@@ -380,10 +379,6 @@
+ 	}
+ 
+ 	public void onDeath(Entity var1) {
+-		if(this.field_9114_aL > 0 && var1 != null) {
+-			var1.addToPlayerScore(this, this.field_9114_aL);
+-		}
+-
+ 		this.field_9100_aZ = true;
+ 		if(!this.worldObj.multiplayerWorld) {
+ 			int var2 = this.getDropItemId();
 --- net/minecraft/server/MinecraftServer.java
 +++ net/minecraft/server/MinecraftServer.java
 @@ -50,8 +50,8 @@
@@ -445,7 +478,7 @@
  		var1.start();
  		ConsoleLogManager.init();
 -		logger.info("Starting minecraft server version Beta 1.1_02");
-+		logger.info("Starting minecraft server version FuckDirt v1.4.2");
++		logger.info("Starting minecraft server version FuckDirt v1.4.3");
  		if(Runtime.getRuntime().maxMemory() / 1024L / 1024L < 512L) {
  			logger.warning("**** NOT ENOUGH RAM!");
  			logger.warning("To start the server with more ram, launch it as \"java -Xmx1024M -Xms1024M -jar minecraft_server.jar\"");
@@ -473,3 +506,24 @@
  		}
  
  		this.configManager = new ServerConfigurationManager(this);
+--- net/minecraft/src/EntityPlayer.java
++++ net/minecraft/src/EntityPlayer.java
+@@ -7,7 +7,6 @@
+ 	public CraftingInventoryCB field_20053_ao;
+ 	public CraftingInventoryCB field_20052_ap;
+ 	public byte field_9152_am = 0;
+-	public int field_9151_an = 0;
+ 	public float field_9150_ao;
+ 	public float field_9149_ap;
+ 	public boolean field_9148_aq = false;
+@@ -163,10 +162,6 @@
+ 		}
+ 
+ 		this.yOffset = 0.1F;
+-	}
+-
+-	public void addToPlayerScore(Entity var1, int var2) {
+-		this.field_9151_an += var2;
+ 	}
+ 
+ 	public void func_161_a() {

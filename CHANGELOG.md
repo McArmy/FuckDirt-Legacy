@@ -1,5 +1,10 @@
 # Changelog - FuckDirt
 
+### v1.4.3
+- \- Removed dirt
+- \- Removed score
+- \~ Changed main menu "Texture Packs" i18n string
+
 ### v1.4.2
 - \- Removed dirt
 - \~ Fixed picky blocks (like sapplings or sugar canes) being able to be placed on non-colliding blocks (like fire or snow layers)

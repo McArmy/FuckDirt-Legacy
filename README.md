@@ -1,5 +1,5 @@
 # FuckDirt
-v1.4.2 - [Changelog](CHANGELOG.md) | [Contributing](CONTRIBUTING.md) | [License](LICENSE)
+v1.4.3 - [Changelog](CHANGELOG.md) | [Contributing](CONTRIBUTING.md) | [License](LICENSE)
 
 ### Requirements
 -   =   Java JDK 8 ([Adoptium OpenJDK](https://adoptium.net/temurin/releases/?package=jdk&version=8) recommended)
