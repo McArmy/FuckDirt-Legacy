@@ -5,6 +5,7 @@
 - \- Removed score
 - \~ Changed default controls
 - \~ Changed multiple property names in server.properties
+- \~ Changed max-players property value from 20 to 24 in server.properties
 - \~ Changed main menu "Texture Packs" i18n string
 
 ### v1.4.2

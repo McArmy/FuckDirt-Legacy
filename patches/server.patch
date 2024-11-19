@@ -528,7 +528,7 @@
  	private void func_6017_c(String var1) {
  		logger.info("Preparing start region");
 -		this.worldMngr = new WorldServer(this, new File("."), var1, this.propertyManagerObj.getBooleanProperty("hellworld", false) ? -1 : 0);
-+		this.worldMngr = new WorldServer(this, new File("."), var1, this.propertyManagerObj.getBooleanProperty("nether-world", false) ? -1 : 0);
++		this.worldMngr = new WorldServer(this, new File("."), var1, this.propertyManagerObj.getBooleanProperty("world-hell", false) ? -1 : 0);
  		this.worldMngr.func_4072_a(new WorldManager(this));
  		this.worldMngr.monstersEnabled = this.propertyManagerObj.getBooleanProperty("spawn-monsters", true) ? 1 : 0;
  		this.configManager.setPlayerManager(this.worldMngr);
