@@ -661,7 +661,7 @@
  	}
 --- net/minecraft/src/GameSettings.java
 +++ net/minecraft/src/GameSettings.java
-@@ -26,9 +26,9 @@
+@@ -26,11 +26,11 @@
  	public KeyBinding keyBindBack = new KeyBinding("key.back", 31);
  	public KeyBinding keyBindRight = new KeyBinding("key.right", 32);
  	public KeyBinding keyBindJump = new KeyBinding("key.jump", 57);
@@ -671,5 +671,8 @@
 -	public KeyBinding keyBindChat = new KeyBinding("key.chat", 20);
 +	public KeyBinding keyBindChat = new KeyBinding("key.chat", 28);
  	public KeyBinding keyBindToggleFog = new KeyBinding("key.fog", 33);
- 	public KeyBinding keyBindSneak = new KeyBinding("key.sneak", 42);
+-	public KeyBinding keyBindSneak = new KeyBinding("key.sneak", 42);
++	public KeyBinding keyBindSneak = new KeyBinding("key.sneak", 29);
  	public KeyBinding[] keyBindings = new KeyBinding[]{this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindToggleFog};
+ 	protected Minecraft mc;
+ 	private File optionsFile;

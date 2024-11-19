@@ -238,6 +238,17 @@
  					int var16;
  					for(var16 = var4 - 3 + var6; var16 <= var4 + var6; ++var16) {
  						var10 = var16 - (var4 + var6);
+--- net/minecraft/src/ServerConfigurationManager.java
++++ net/minecraft/src/ServerConfigurationManager.java
+@@ -33,7 +33,7 @@
+ 		this.ipBanFile = var1.getFile("banned-ips.txt");
+ 		this.opFile = var1.getFile("ops.txt");
+ 		this.playerManagerObj = new PlayerManager(var1);
+-		this.maxPlayers = var1.propertyManagerObj.getIntProperty("max-players", 20);
++		this.maxPlayers = var1.propertyManagerObj.getIntProperty("max-players", 24);
+ 		this.readBannedPlayers();
+ 		this.loadBannedList();
+ 		this.loadOps();
 --- net/minecraft/src/BlockDirt.java
 +++ /dev/null
 @@ -1,7 +1,0 @@
@@ -482,30 +493,45 @@
  		if(Runtime.getRuntime().maxMemory() / 1024L / 1024L < 512L) {
  			logger.warning("**** NOT ENOUGH RAM!");
  			logger.warning("To start the server with more ram, launch it as \"java -Xmx1024M -Xms1024M -jar minecraft_server.jar\"");
-@@ -72,8 +72,8 @@
+@@ -71,9 +71,9 @@
+ 
  		logger.info("Loading properties");
  		this.propertyManagerObj = new PropertyManager(new File("server.properties"));
- 		String var2 = this.propertyManagerObj.getStringProperty("server-ip", "");
+-		String var2 = this.propertyManagerObj.getStringProperty("server-ip", "");
 -		this.onlineMode = this.propertyManagerObj.getBooleanProperty("online-mode", true);
++		String var2 = this.propertyManagerObj.getStringProperty("server-ip", "0.0.0.0");
  		this.noAnimals = this.propertyManagerObj.getBooleanProperty("spawn-animals", true);
 +		this.spawnProtection = this.propertyManagerObj.getIntProperty("spawn-protection", 16);
  		this.field_9011_n = this.propertyManagerObj.getBooleanProperty("pvp", true);
  		InetAddress var3 = null;
  		if(var2.length() > 0) {
-@@ -90,13 +90,6 @@
- 			logger.log(Level.WARNING, "The exception was: " + var6.toString());
- 			logger.warning("Perhaps a server is already running on that port?");
+@@ -92,16 +92,9 @@
  			return false;
--		}
--
+ 		}
+ 
 -		if(!this.onlineMode) {
 -			logger.warning("**** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!");
 -			logger.warning("The server will make no attempt to authenticate usernames. Beware.");
 -			logger.warning("While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.");
 -			logger.warning("To change this, set \"online-mode\" to \"true\" in the server.settings file.");
- 		}
- 
+-		}
+-
  		this.configManager = new ServerConfigurationManager(this);
+ 		this.field_6028_k = new EntityTracker(this);
+-		String var5 = this.propertyManagerObj.getStringProperty("level-name", "world");
++		String var5 = this.propertyManagerObj.getStringProperty("world-name", "world");
+ 		logger.info("Preparing level \"" + var5 + "\"");
+ 		this.func_6017_c(var5);
+ 		logger.info("Done! For help, type \"help\" or \"?\"");
+@@ -110,7 +103,7 @@
+ 
+ 	private void func_6017_c(String var1) {
+ 		logger.info("Preparing start region");
+-		this.worldMngr = new WorldServer(this, new File("."), var1, this.propertyManagerObj.getBooleanProperty("hellworld", false) ? -1 : 0);
++		this.worldMngr = new WorldServer(this, new File("."), var1, this.propertyManagerObj.getBooleanProperty("nether-world", false) ? -1 : 0);
+ 		this.worldMngr.func_4072_a(new WorldManager(this));
+ 		this.worldMngr.monstersEnabled = this.propertyManagerObj.getBooleanProperty("spawn-monsters", true) ? 1 : 0;
+ 		this.configManager.setPlayerManager(this.worldMngr);
 --- net/minecraft/src/EntityPlayer.java
 +++ net/minecraft/src/EntityPlayer.java
 @@ -7,7 +7,6 @@

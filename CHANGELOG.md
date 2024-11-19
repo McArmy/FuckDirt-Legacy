@@ -3,6 +3,8 @@
 ### v1.4.3
 - \- Removed dirt
 - \- Removed score
+- \~ Changed default controls
+- \~ Changed multiple property names in server.properties
 - \~ Changed main menu "Texture Packs" i18n string
 
 ### v1.4.2
@@ -24,7 +26,7 @@
 ### v1.4
 - \- Removed dirt
 - \- Removed online mode
-- \+ Added spawn protection variable to server properties
+- \+ Added spawn protection variable to server.properties
 
 ### v1.3.1
 - \- Removed dirt
